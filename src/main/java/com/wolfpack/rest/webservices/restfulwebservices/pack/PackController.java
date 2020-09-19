@@ -156,7 +156,6 @@ public class PackController {
 	 * @param wolfId is the id of the specific wolf. Minimum value of id is 1.
      * @return DELETE request response with 200 status code.
      * @throws WolfNotFoundException with 404 status code if wolf was not found in database.
-     * @throws PackNotFoundException with 404 status code if pack was not found in database.
 	 */
 	@DeleteMapping("/wolfPacks/wolves/{wolfId}")
 	public ResponseEntity<Object> DeleteWolfFromThePack(@PathVariable @Min(1) int wolfId)
