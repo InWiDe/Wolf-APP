@@ -1,6 +1,10 @@
 package com.wolfpack.rest.webservices.restfulwebservices.exception;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -38,8 +42,17 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(
 			MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), "Validation Failed", ex.getBindingResult().toString());
-		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.BAD_REQUEST);
+		
+		Map<String,Object> body = new LinkedHashMap<>();
+		body.put("timestamp", new Date());
+		body.put("status", status.value());
+		
+		//Get all errors
+		List<String> errors = ex.getBindingResult().getFieldErrors().stream()
+				.map(x -> x.getDefaultMessage()).collect(Collectors.toList());
+		
+		body.put("errors", errors);
+		return new ResponseEntity<Object>(body, headers,status);
 	}
 	
 	@ExceptionHandler(PackNotFoundException.class)

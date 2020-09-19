@@ -22,9 +22,11 @@ import io.swagger.annotations.ApiModelProperty;
 @Entity
 @Table(name="pack")
 public class Pack {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
 	
 	@NotNull(message="Wof wof, pack cannot survive without it's name!")
 	@ApiModelProperty(notes="Wof wof, pack cannot survive without it's name!")

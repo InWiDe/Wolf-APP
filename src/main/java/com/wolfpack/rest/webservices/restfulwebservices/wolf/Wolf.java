@@ -9,6 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
@@ -28,19 +32,26 @@ public class Wolf {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@NotEmpty(message = "Please provide a name")
 	@Size(min=2, message="Name should have at least 2 characters")
-	@ApiModelProperty(notes="Name should have at least 2 characters")
+	@ApiModelProperty(notes="Name should have at least 2 characters") // Defines how the property will look like in the Swagger
 	private String name;
 	
-	private String gender; // Make enum
+	@NotEmpty(message = "Please provide a gender")
+	private String gender;
 	
-	@Past
+	@NotNull(message="Please provide a date of birth using following format:yyyy-MM-dd")
+	@Past // Birth date should be in the past
 	@ApiModelProperty(notes="Birthday should be in the past")
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date birthDate;
 	
+	@NotNull(message="Please provide longtitude")
+	@DecimalMin("-180") @DecimalMax("180")
 	private Double longtitude;
 	
+	@NotNull(message="Please provide latitude")
+	@DecimalMin("-180") @DecimalMax("180")
 	private Double latitude;
 	
 	@ManyToOne
